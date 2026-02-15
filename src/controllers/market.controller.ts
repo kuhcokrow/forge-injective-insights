@@ -1,13 +1,136 @@
+import { FastifyReply, FastifyRequest } from 'fastify'
 import * as marketService from '../services/market.service' 
 
-export async function getAllMarkets() {
-  return await marketService.getAllMarkets()
+export const getAllMarkets = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  try {
+    const markets = await marketService.getAllMarkets()
+    return res.status(200).send(markets)
+  } catch (err: any) {
+    return res.status(500).send({
+      error: 'Failed to fetch markets'
+    })
+  }
 }
 
-export async function getMarketById(marketId: string) {
-  return await marketService.getMarketById(marketId)
+export const getMarketById = async (
+  req: FastifyRequest<{ Params: { marketId: string } }>, 
+  res: FastifyReply
+) => {
+  try {
+    const { marketId } = req.params
+    const market = await marketService.getMarketById(marketId)
+    return res.status(200).send(market)
+  }
+  catch (err: any) {
+    return res.status(404).send({
+      error: `Market with ID ${req.params.marketId} not found`
+    })
+  }
 }
 
-export async function getOrderbook(marketId: string) {
-  return await marketService.fetchOrderbook(marketId)
+export const getOrderbook = async (
+  req: FastifyRequest<{ Params: { marketId: string } }>,
+  res: FastifyReply
+) => {
+  try {
+    const { marketId } = req.params
+    const orderbook = await marketService.fetchOrderbook(marketId)
+    return res.status(200).send(orderbook)
+  } catch (err: any) {
+    return res.status(500).send({
+      error: `Failed to fetch orderbook for market ${req.params.marketId}`
+    })
+  }
 }
+
+export const getSummary = async (
+  req: FastifyRequest<{ Params: { marketId: string } }>,
+  res: FastifyReply
+) => {
+  try {
+    const { marketId } = req.params
+    const summary = await marketService.fetchMarketSummary(marketId)
+    return res.status(200).send(summary)
+  } catch (err: any) {
+    return res.status(500).send({
+      error: `Failed to fetch summary for market ${req.params.marketId}`
+    })
+  }
+}
+
+export const getLiquidity = async (
+  req: FastifyRequest<{ Params: { marketId: string } }>,
+  res: FastifyReply
+) => {
+  try {
+    const { marketId } = req.params
+    const liquidity = await marketService.fetchLiquidity(marketId)
+    return res.status(200).send(liquidity)
+  } catch (err: any) {
+    return res.status(500).send({
+      error: `Failed to fetch liquidity for market ${req.params.marketId}`
+    })
+  }
+}
+
+export const getAnalytics = async (
+  req: FastifyRequest<{ Params: { id: string } }>,
+  res: FastifyReply
+) => {
+  try {
+    const { id } = req.params;
+
+    const summary = await marketService.fetchMarketSummary(id);
+    const liquidity = await marketService.fetchLiquidity(id);
+
+    const analytics = {
+      summary,
+      liquidity
+    };
+
+    return res.status(200).send({
+      marketId: id,
+      analytics,
+      timestamp: Date.now()
+    });
+  } catch (error) {
+    return res.status(500).send({
+      error: "Failed to fetch market analytics"
+    });
+  }
+};
+
+export const getRank = async (
+  req: FastifyRequest,
+  res: FastifyReply
+) => {
+  try {
+    const markets = await marketService.getAllMarkets();
+
+    const results = [];
+
+    for (const market of markets) {
+      const liquidity = await marketService.fetchLiquidity(market.marketId);
+
+      results.push({
+        marketId: market.marketId,
+        liquidityScore: liquidity.liquidityScore,
+        totalDepth: liquidity.totalDepth
+      });
+    }
+
+    results.sort((a, b) => b.liquidityScore - a.liquidityScore);
+
+    return res.send({
+      count: results.length,
+      ranking: results
+    });
+  } catch (error) {
+    return res.status(500).send({
+      error: "Failed to rank markets"
+    });
+  }
+};

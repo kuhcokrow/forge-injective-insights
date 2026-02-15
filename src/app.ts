@@ -9,7 +9,7 @@ export async function build() {
 
   await app.register(cors)
 
-  await app.register(marketRoutes, { prefix: '/api/market' })
+  await app.register(marketRoutes, { prefix: '/api/markets' })
 
   return app
 }
