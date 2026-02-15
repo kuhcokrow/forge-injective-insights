@@ -1,5 +1,5 @@
 import { liquidityMetric } from "../utils/liquidity";
-import { calculateSpread } from "../utils/market";
+import { calculateSpread } from "../utils/formater";
 import { spotApi } from "./injective.service";
 
 export const getAllMarkets = async () => {
