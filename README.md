@@ -10,6 +10,19 @@ A comprehensive REST API that aggregates, analyzes, and provides actionable mark
 
 FII is a developer-focused API service that transforms raw Injective market data into clean, meaningful insights. It aggregates order book data, computes liquidity metrics, analyzes market volatility, and ranks markets by liquidity score—all through intuitive REST endpoints.
 
+### 📚 Interactive API Documentation
+
+Explore and test all endpoints with **Swagger/OpenAPI UI**:
+```
+http://localhost:3000/docs
+```
+
+The interactive documentation includes:
+- ✅ Full endpoint specifications
+- 🧪 Try-it-out functionality to test endpoints
+- 📋 Request/response examples
+- 🔍 Schema definitions for all data types
+
 **Key Features:**
 - 📊 Real-time market data aggregation
 - 💧 Advanced liquidity analytics
@@ -26,6 +39,9 @@ FII is a developer-focused API service that transforms raw Injective market data
 src/
 ├── app.ts                 # Express application setup
 ├── server.ts              # Server initialization
+├── config/
+│   ├── swagger.ts         # Swagger/OpenAPI configuration
+│   └── schemas.ts         # OpenAPI endpoint schemas
 ├── controllers/
 │   └── market.controller.ts    # Market request handlers
 ├── routes/
@@ -320,6 +336,8 @@ All data is directly sourced from Injective's on-chain DEX infrastructure.
    ```bash
    pnpm install
    ```
+   
+   This includes Swagger/OpenAPI dependencies for interactive API documentation.
 
 3. **Build the project**
    ```bash
@@ -332,6 +350,8 @@ All data is directly sourced from Injective's on-chain DEX infrastructure.
    ```
 
    The API will be available at `http://localhost:3000`
+   
+   📚 **API Documentation**: http://localhost:3000/docs
 
 ### Development Mode
    ```bash
@@ -365,6 +385,7 @@ All data is directly sourced from Injective's on-chain DEX infrastructure.
 
 - **Runtime**: Node.js / TypeScript
 - **Framework**: Fastify
+- **API Documentation**: Swagger/OpenAPI 3.0 with Fastify UI
 - **Data Source**: Injective Protocol
 - **Language**: TypeScript
 - **Package Manager**: pnpm
