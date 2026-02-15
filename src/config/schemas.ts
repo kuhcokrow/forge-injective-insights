@@ -180,9 +180,38 @@ export const schemas = {
         properties: {
           marketId: { type: 'string' },
           spread: { type: 'number' },
-          summary: { type: 'object' },
-          liquidity: { type: 'object' },
-          volatility: { type: 'object' },
+          summary: {
+            type: 'object',
+            properties: {
+              ticker: { type: 'string' },
+              marketStatus: { type: 'string' },
+              topBid: { type: 'number' },
+              topAsk: { type: 'number' },
+              spread: { type: 'number' },
+            },
+          },
+          liquidity: {
+            type: 'object',
+            properties: {
+              totalBidDepth: { type: 'number' },
+              totalAskDepth: { type: 'number' },
+              totalDepth: { type: 'number' },
+              midPrice: { type: 'number' },
+              spread: { type: 'number' },
+              imbalance: { type: 'number' },
+              liquidityScore: { type: 'number' },
+            },
+          },
+          volatility: {
+            type: 'object',
+            properties: {
+              priceVolatility: { type: 'number' },
+              spreadVolatility: { type: 'number' },
+              depthVolatility: { type: 'number' },
+              volatilityScore: { type: 'number' },
+              level: { type: 'string' },
+            },
+          },
         },
       },
     },

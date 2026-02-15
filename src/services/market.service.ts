@@ -44,6 +44,8 @@ export const fetchMarketSummary = async (marketId: string) => {
   const topBid = orderbook.buys.length > 0 ? Number(orderbook.buys[0]?.price) : 0
   const topAsk = orderbook.sells.length > 0 ? Number(orderbook.sells[0]?.price) : 0
   
+  console.log(`[fetchMarketSummary] ${marketId}:`, { topBid, topAsk, buysCount: orderbook.buys.length, sellsCount: orderbook.sells.length })
+  
   return {
     marketId: market.marketId,
     ticker: market.ticker,
@@ -61,7 +63,7 @@ export const fetchLiquidity = async (marketId: string) => {
   const sells = orderbook.sells.map((s: any) => ({ ...s, price: Number(s.price) }))
   
   const metrics = liquidityMetric(buys, sells)
-
+  
   return {
     marketId,
     ...metrics

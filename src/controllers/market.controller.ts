@@ -125,15 +125,24 @@ export const getAnalytics = async (
     const summary = await marketService.fetchMarketSummary(marketId);
     const liquidity = await marketService.fetchLiquidity(marketId);
 
+    if (!summary || !liquidity) {
+      return res.status(400).send({
+        error: "Market data not available",
+        marketId,
+        summaryExists: !!summary,
+        liquidityExists: !!liquidity
+      });
+    }
+
     addSnapshot(marketId, {
       midPrice: (summary.topBid + summary.topAsk) / 2,
-      spread: summary.spread ?? 0,
+      spread: summary.spread ?? liquidity.spread,
       totalDepth: liquidity.totalDepth
     });
 
     const volatility = calculateVolatility(marketId);
 
-    return res.send({
+    const responseBody = {
       marketId,
       spread : summary.spread ?? liquidity.spread,
       summary: {
@@ -151,10 +160,15 @@ export const getAnalytics = async (
         liquidityScore: liquidity.liquidityScore
       },
       volatility
-    });
-  } catch (error) {
+    };
+
+
+    return res.send(responseBody);
+  } catch (error: any) {
+    console.error(error.message);
     return res.status(500).send({
-      error: "Failed to fetch market analytics"
+      error: "Failed to fetch market analytics",
+      details: error.message
     });
   }
 };
