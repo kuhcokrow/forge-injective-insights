@@ -48,7 +48,7 @@ Retrieve paginated list of active markets with basic information.
 
 **Endpoint:**
 ```
-GET /markets?page=1&limit=10
+GET /api/markets?page=1&limit=10
 ```
 
 **Query Parameters:**
@@ -85,7 +85,7 @@ Retrieve detailed information about a specific market including token details an
 
 **Endpoint:**
 ```
-GET /markets/:marketId
+GET /api/markets/:marketId
 ```
 
 **Path Parameters:**
@@ -124,7 +124,7 @@ Retrieve current order book data with bids and asks.
 
 **Endpoint:**
 ```
-GET /markets/:marketId/orderbook?page=1&limit=10
+GET /api/markets/:marketId/orderbook?page=1&limit=10
 ```
 
 **Query Parameters:**
@@ -164,7 +164,7 @@ Quick market snapshot with current bid, ask, and spread.
 
 **Endpoint:**
 ```
-GET /markets/:marketId/summary
+GET /api/markets/:marketId/summary
 ```
 
 **Response Example:**
@@ -186,7 +186,7 @@ Comprehensive liquidity analysis including depth, imbalance, and liquidity score
 
 **Endpoint:**
 ```
-GET /markets/:marketId/liquidity
+GET /api/markets/:marketId/liquidity
 ```
 
 **Response Example:**
@@ -217,7 +217,7 @@ Complete market analysis combining summary, liquidity, and volatility metrics.
 
 **Endpoint:**
 ```
-GET /markets/:marketId/analytics
+GET /api/markets/:marketId/analytics
 ```
 
 **Response Example:**
@@ -256,7 +256,7 @@ Ranked list of markets sorted by liquidity score.
 
 **Endpoint:**
 ```
-GET /markets/top-liquidity?page=1&limit=10
+GET /api/markets/top-liquidity?page=1&limit=10
 ```
 
 **Query Parameters:**
